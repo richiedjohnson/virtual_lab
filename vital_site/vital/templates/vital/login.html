@@ -23,44 +23,46 @@
 	  </a>
 	  <img src="{% static 'vital/poly_header.png' %}" id="poly-header" width="254px" height="12px">
 	  <div id="user-nav-container">
-	    <ul id="user-nav">
-            {% if user.is_faculty %}
-                <li class="menu-335"><a href="http://engineering.nyu.edu/alumni">Advising Courses</a></li>
-            {% endif %}
-            {% if user.is_admin %}
-                <li class="menu-334"><a href="http://engineering.nyu.edu/alumni">Courses</a></li>
-                <li class="menu-334"><a href="http://engineering.nyu.edu/alumni">Users</a></li>
-            {% endif %}
-            {% if not user.is_admin and not user.is_faculty %}
-                <li class="menu-335"><a href="http://engineering.nyu.edu/alumni">Registered Courses</a></li>
-            {% endif %}
-                <li class="menu-334"><a href="/vital/users/reset-password">Reset Password</a></li>
-</ul>	  
-</div>
+        &nbsp;
+      </div>
 	</div> <!-- /#header --> 
 	</div>
 	
 	<div id="main-nav-container" style="padding-left: 20px;padding-top: 7px">
-		<div class="container-12 clearfix" style="font-size: 18px; color: white; font-weight: 500; font-family: inherit; font-variant: small-caps;">
-            <div style="float: left; width: 50%">Virtual Lab</div>
-            <div style="float: left;font-size: 12px; color: white; text-align:right;width: 50%">Welcome, {{ request.user.first_name }} &nbsp;| &nbsp;
-            <a href="/vital/logout">Logout</a>&nbsp;</div>
+		<div class="container-12 clearfix" style="font-size: 18px; color: white; font-weight: 500; font-family: inherit;font-variant: small-caps">
+            Vital
 		</div>
 	</div> 
     
-      <div id="container">
+      <div id="container" align="center">
       <!--div id="inner"-->
-      <div id="center">
-          {% if active_courses %}
-    <ul>
-    {% for course in active_courses %}
-        <li><a href="{% url 'vital:course_detail' course.id %}">{{ course.name }}</a></li>
-    {% endfor %}
-    </ul>
-{% else %}
-    <p>No active courses are available.</p>
-{% endif %}
+      <div id="center" align="center" style="width: 600px">
 
+<form action="{% url 'vital:login' %}" method='POST' style="width: 300px">
+    {% csrf_token %}
+    {% if error_message %}
+    <p class="error">
+            {{ error_message }}
+    </p>
+    {% endif %}
+    <table style="width: auto">
+        {% for field in form %}
+            <tr>
+            <td>{{ field.label_tag }}</td>
+            <td>{{ field }}</td>
+            </tr>
+        {% endfor %}
+    <tr><td colspan="3" align="right"><input type='submit' value='Login'/></td></tr>
+    </table>
+    <hr style="width: 80%"/>
+    <div style="width: 100%;font-size:small" align="center">
+        <a href="/vital/users/forgot-password">Can't access your account?</a>
+    </div>
+    <br />
+    <div style="width: 100%;font-size:small" align="center">
+        New to Vital? <br/><a href="/vital/users/register">Signup for a new account</a>
+    </div>
+</form>
       </div>
       <div class="clear"></div>
       <!--/div--> <!-- /#inner -->

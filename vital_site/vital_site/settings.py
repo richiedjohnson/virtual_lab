@@ -33,6 +33,7 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     'vital.apps.VitalConfig',
     'captcha',
+    'passwords',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -106,6 +107,9 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+AUTH_USER_MODEL = 'vital.VLAB_User'
+#AUTHENTICATION_BACKENDS = ['vital.backends.EmailAuthBackend', ]
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.9/topics/i18n/
@@ -161,3 +165,13 @@ LOGGING = {
         },
     }
 }
+
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'vital.nyu@gmail.com'
+EMAIL_HOST_PASSWORD = 'vital@nyupoly'
+EMAIL_PORT = 587
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+
+PASSWORD_MIN_LENGTH = 8
+PASSWORD_COMPLEXITY = {"UPPER":  1, "LOWER":  1, "DIGITS": 1, "SPECIAL": 1}
