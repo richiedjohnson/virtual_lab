@@ -86,6 +86,17 @@ class Course(models.Model):
         return self.course_number + ":" + self.name
 
 
+class Virtual_Machine_Type(models.Model):
+    name = models.CharField(max_length=200)
+    icon_location = models.CharField(max_length=500)
+
+
+class Virtual_Machines(models.Model):
+    course = models.ForeignKey(Course)
+    name = models.CharField(max_length=200)
+    type = models.ForeignKey(Virtual_Machine_Type, null=True)
+
+
 class Faculty(models.Model):
     PROFESSOR = 'PR'
     TEACHING_ASSISTANT = 'TA'
@@ -102,7 +113,7 @@ class Faculty(models.Model):
 
 
 class Registered_Courses(models.Model):
-    student = models.ForeignKey(VLAB_User, on_delete=models.CASCADE)
+    user_id = models.IntegerField(default=0)
     course = models.ForeignKey(Course)
     registered_date = models.DateTimeField(default=datetime.now, blank=True)
 

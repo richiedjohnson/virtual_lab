@@ -3,6 +3,7 @@ from django.contrib.auth import login as django_login, authenticate, logout as d
 from django.core.mail import send_mail
 from django.http import HttpResponseNotAllowed
 from django.template import RequestContext
+from django.contrib.auth import update_session_auth_hash
 
 from ..forms import Registration_Form, User_Activation_Form, Authentication_Form, Reset_Password_Form, \
     Forgot_Password_Form
@@ -104,6 +105,7 @@ def reset_password(request):
                 user = VLAB_User.objects.get(email=request.user.email)
                 user.set_password(form.cleaned_data['password'])
                 user.save()
+                update_session_auth_hash(request, user)
                 return redirect('/vital')  # change here to home page
             else:
                 logger.debug(form.cleaned_data['user_email']+'-'+form.cleaned_data['activation_code'])
@@ -112,6 +114,7 @@ def reset_password(request):
                     user.set_password(form.cleaned_data['password'])
                     user.activation_code=None
                     user.save()
+                    update_session_auth_hash(request, user)
                     return redirect('/vital')  # change here to home page
                 else:
                     error_message = 'Please use the link sent to you in your email'
@@ -160,7 +163,7 @@ def login(request):
             if user is not None:
                 if user.is_active:
                     django_login(request, user)
-                    return redirect('/vital')  # change here to home page
+                    return redirect('/vital')
                 else:
                     form = User_Activation_Form(initial={'user_email': user.email})
                     return render(request, 'vital/user_registration_validate.html', {'message': 'User is not active. ' +

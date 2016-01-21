@@ -1,7 +1,6 @@
 from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib.auth.decorators import login_required
-from ..models import Course
-from ..models import  Registered_Courses
+from ..models import Course, Registered_Courses, Virtual_Machines
 from ..forms import Course_Registration_Form
 from ..utils import audit
 import logging
@@ -13,22 +12,20 @@ logger = logging.getLogger(__name__)
 @login_required(login_url='/vital/login/')
 def index(request):
     logger.debug("In index")
-    # this is a sample service to get started
-    active_courses = Course.objects.filter(status='ACTIVE')
-    logger.debug(active_courses)
-    context = {'active_courses': active_courses}
-    return render(request, 'vital/index.html', context)
-
-
-def course_detail(request, course_id):
-    course = get_object_or_404(Course, pk=course_id)
-    return render(request, 'vital/course_detail.html', {'course': course})
+    user = request.user
+    if not user.is_faculty and not user.is_admin:
+        return redirect('/vital/courses/registered')  # change here to home page
+    elif user.is_faculty:
+        logger.debug('user is a faculty')
+        return redirect('/vital/courses/registered')  # change here to home page
+    else:
+        logger.debug('user is admin')
 
 
 @login_required(login_url='/vital/login/')
 def registered_courses(request):
     logger.debug("In registered courses")
-    reg_courses = request.user.registered_courses_set.all()
+    reg_courses = Registered_Courses.objects.filter(user_id=request.user.id)
     courses = []
     message = ''
     if len(reg_courses) > 0:
@@ -41,8 +38,33 @@ def registered_courses(request):
 
 
 @login_required(login_url='/vital/login/')
+def course_detail(request, course_id):
+    logger.debug("in course detail")
+    virtual_machines = Virtual_Machines.objects.filter(course_id=course_id)
+    return render(request, 'vital/course_detail.html', {'virtual_machines': virtual_machines})
+
+
+@login_required(login_url='/vital/login/')
+def unregister_from_course(request, course_id):
+    logger.debug("in course unregister")
+    user = request.user
+    reg_courses = Registered_Courses.objects.filter(course_id=course_id, user_id=user.id)
+    course_to_remove = reg_courses[0]
+    audit(request, course_to_remove, 'User '+str(user.id)+' unregistered from course -'+str(course_id))
+    course_to_remove.delete()
+    course = Course.objects.get(pk=course_id)
+    course.students_registered -= 1
+    course.save()
+    return redirect('/vital/courses/registered/')
+
+
+def dummy_console(request):
+    return render(request, 'vital/dummy.html')
+
+
+@login_required(login_url='/vital/login/')
 def register_for_course(request):
-    logger.debug("in activate")
+    logger.debug("in register for course")
     error_message = ''
     if request.method == 'POST':
         form = Course_Registration_Form(request.POST)
@@ -52,14 +74,20 @@ def register_for_course(request):
             try:
                 course = Course.objects.get(registration_code=form.cleaned_data['course_registration_code'])
                 user = request.user
-                try:
-                    if user.registered_courses_set.get(course_id=course.id):
+                values = Registered_Courses.objects.filter(course_id=course.id, user_id=user.id)
+                if len(Registered_Courses.objects.filter(course_id=course.id, user_id=user.id)) > 0:
                         error_message = 'You have already registered for this course'
-                except Registered_Courses.DoesNotExist:
-                    user.registered_courses_set.create(course_id=course.id)
-                    audit(request, user, 'User registered for new course -'+course.id)
-                    # PLACE TO DO CREATING VMS FOR USER FOR THE COURSE
-                    return redirect('/vital/courses/registered/')
+                else:
+                    if course.has_free_slots():
+                        registered_course = Registered_Courses(course_id=course.id, user_id=user.id)
+                        registered_course.save()
+                        course.students_registered += 1
+                        course.save()
+                        audit(request, registered_course, 'User '+str(user.id)+' registered for new course -'+str(course.id))
+                        # PLACE TO DO CREATING VMS FOR USER FOR THE COURSE
+                        return redirect('/vital/courses/registered/')
+                    else:
+                        error_message = 'The course has reached its maximum student capacity.'
             except Course.DoesNotExist:
                 error_message = 'Invalid registration code. Check again.'
     else:
