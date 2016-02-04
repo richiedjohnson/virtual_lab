@@ -16,27 +16,6 @@
 }
     </script>
 <style type="text/css">
-
-    .button {
-    background-color: white;
-    color: black;
-    border: 2px solid #d2bfde;
-    padding: 5px 10px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 12px;
-    }
-    .button:hover {
-    background-color: #d2bfde;
-    color: white;
-    text-decoration: none;
-    }
-
-    .button:active {
-       text-decoration: none;
-    }
-
     #center{
         width : 800px
     }
@@ -66,42 +45,12 @@
 	    opacity:1;
 	}
     </style>
-    <style>
-        table, th, td {
-            border: 1px solid #d2bffe;
-            font-size: 12px;
-        }
-    </style>
 
+    {% if virtual_machines %}
     <div id="center" align="center" style="width: 800px">
-        {% if course %}
-            <table>
-            <tr><td style="background-color: #d2bfde;">Course Name</td><td>{{ course.name }}</td>
-                <td style="background-color: #d2bfde;">Course Number</td><td>{{ course.course_number }}</td></tr>
-            <tr><td style="background-color: #d2bfde;">Status</td><td>{{ course.status }}</td>
-                <td style="background-color: #d2bfde;">Registration Code</td><td>{{ course.registration_code }}</td></tr>
-            <tr><td style="background-color: #d2bfde;">Created On</td><td>{{ course.created_date }}</td>
-                <td style="background-color: #d2bfde;">Start On</td><td>{{ course.start_date }}</td></tr>
-            <tr><td style="background-color: #d2bfde;">Capacity</td><td>{{ course.capacity }}</td>
-                <td style="background-color: #d2bfde;">Currently Registered</td><td>{{ students_registered }}</td></tr>
-            <tr><td style="background-color: #d2bfde;">Professors</td><td>{% if professors %}{{ professors }}{% else %} None Assigned {% endif %}</td>
-                <td style="background-color: #d2bfde;">Teaching Assistants</td><td>{% if teaching_assistants %}{{ teaching_assistants }}{% else %} None Assigned {% endif %}</td></tr>
-            {% if is_prof %}
-                <tr><td colspan="4" align="right">
-                    {% if course.status == 'ACTIVE' %}
-                        <a href="#" class="button">End Course</a>
-                    {% else %}
-                        <a href="#" class="button">Start Course</a>
-                    {% endif %}
-                </td></tr>
-            {% endif %}
-            </table>
-            <br />
-            {% if virtual_machines %}
-                <div style="width: 75%">
-                <table>
-                {% for vm in virtual_machines %}<tr><td width="100px">
-                <div class="box" style='background:url({% static  vm.type.icon_location %}) no-repeat 50% 50%;background-size: contain;'
+        <div width="500px">
+            {% for vm in virtual_machines %}
+                <div class="box" width="25%" style='background:url({% static  vm.type.icon_location %}) no-repeat 50% 50%;background-size: contain;'
                      title={{ vm.name }}>
 		            <div class="overlay" style="width:100%;height:100%">
 	                    <div style="height:33%;padding-top:7px">
@@ -131,27 +80,10 @@
 		            </div>
 		            <div style="width:100%; margin-top:-5px; font-weight:bold" align="center">{{ vm.name }}</div>
 		        </div>
-                    </td>
-                <td>
-                <table>
-                    <tr><td>Base Image : {{ vm.base_image.name }}</td><td>Memory : {{ vm.base_image.memory }}MB</td></tr>
-                    <tr><td>Backing File : {{ vm.base_image.backing_file }}</td><td>Reimage File : {{ vm.base_image.reimage_file }}</td></tr>
-                    <tr><td>Network Config</td>
-                        <td>{% if vm.network_configuration_set.all %}
-                    {% for conf in vm.network_configuration_set.all%}
-                        {{ conf.name }}<br/>
-                    {% endfor %}
-                {% endif %}</td></tr>
-                </table>
-                </td>
-                </tr>
-                {% endfor %}
-                </table>
-                </div>
-            {% endif %}
-        {% else %}
-            <div style="color: red"> Cannot find the course you are looking for!</div>
-        {% endif %}
+            {% endfor %}
+        </div>
      </div>
+    {% endif %}
+
 
 {% endblock content_without_center %}

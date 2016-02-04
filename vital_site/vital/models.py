@@ -74,13 +74,9 @@ class Course(models.Model):
     course_number = models.CharField(max_length=200)
     registration_code = models.CharField(max_length=10, unique=True)
     capacity = models.IntegerField(default=0)
-    students_registered = models.IntegerField(default=0)
     start_date = models.DateTimeField(default=datetime.now, blank=True)
     created_date = models.DateTimeField(default=datetime.now, blank=True)
     status = models.CharField(max_length=10)
-
-    def has_free_slots(self):
-        return self.students_registered < self.capacity
 
     def __str__(self):
         return self.course_number + ":" + self.name
@@ -91,25 +87,37 @@ class Virtual_Machine_Type(models.Model):
     icon_location = models.CharField(max_length=500)
 
 
+class Base_Image(models.Model):
+    name = models.CharField(max_length=200)
+    backing_file = models.CharField(max_length=500)
+    reimage_file = models.CharField(max_length=500,null=True)
+    memory = models.IntegerField(default=0)
+
+
 class Virtual_Machines(models.Model):
     course = models.ForeignKey(Course)
     name = models.CharField(max_length=200)
     type = models.ForeignKey(Virtual_Machine_Type, null=True)
+    base_image = models.ForeignKey(Base_Image, null=True)
+
+
+class Network_Configuration(models.Model):
+    name = models.CharField(max_length=200)
+    virtual_machine = models.ForeignKey(Virtual_Machines)
 
 
 class Faculty(models.Model):
     PROFESSOR = 'PR'
     TEACHING_ASSISTANT = 'TA'
+    OWNER = 'OW'
     TYPE_CHOICES = (
         (PROFESSOR, 'Professor'),
-        (TEACHING_ASSISTANT, 'TeachingAssistant')
+        (TEACHING_ASSISTANT, 'TeachingAssistant'),
+        (OWNER, 'Owner')
     )
     course = models.ForeignKey(Course)
-    user = models.OneToOneField(VLAB_User, null=True)
+    user = models.ForeignKey(VLAB_User, null=True)
     type = models.CharField(max_length=2, choices=TYPE_CHOICES, default=PROFESSOR)
-
-    def __str__(self):
-        return self.user_id + ":" + self.type
 
 
 class Registered_Courses(models.Model):

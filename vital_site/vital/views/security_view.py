@@ -4,6 +4,7 @@ from django.core.mail import send_mail
 from django.http import HttpResponseNotAllowed
 from django.template import RequestContext
 from django.contrib.auth import update_session_auth_hash
+from django.contrib.auth.decorators import login_required
 
 from ..forms import Registration_Form, User_Activation_Form, Authentication_Form, Reset_Password_Form, \
     Forgot_Password_Form
@@ -14,18 +15,6 @@ from random import randint
 
 
 logger = logging.getLogger(__name__)
-
-
-def handler404(request):
-    response = render_to_response('404.html', {}, context_instance=RequestContext(request))
-    response.status_code = 404
-    return response
-
-
-def handler500(request):
-    response = render_to_response('500.html', {}, context_instance=RequestContext(request))
-    response.status_code = 500
-    return response
 
 
 def register(request):
@@ -184,3 +173,17 @@ def logout(request):
     logger.debug("in logout")
     django_logout(request)
     return redirect('/vital/login')
+
+
+@login_required(login_url='/vital/login/')
+def index(request):
+    logger.debug("In index")
+    user = request.user
+    if not user.is_faculty and not user.is_admin:
+        return redirect('/vital/courses/registered')  # change here to home page
+    elif user.is_faculty:
+        logger.debug('user is a faculty')
+        return redirect('/vital/courses/advising')  # change here to home page
+    else:
+        logger.debug('user is admin')
+
