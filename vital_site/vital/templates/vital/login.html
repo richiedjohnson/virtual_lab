@@ -19,11 +19,11 @@
     </table>
     <hr style="width: 80%"/>
     <div style="width: 100%;font-size:small" align="center">
-        <a href="/vital/users/forgot-password">Can't access your account?</a>
+        <a href="{% url 'vital:user_forgot_password' %}">Can't access your account?</a>
     </div>
     <br />
     <div style="width: 100%;font-size:small" align="center">
-        New to Vital? <br/><a href="/vital/users/register">Signup for a new account</a>
+        New to Vital? <br/><a href="{% url 'vital:user_register' %}">Signup for a new account</a>
     </div>
 </form>
 {% endblock content %}
