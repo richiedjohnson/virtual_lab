@@ -17,8 +17,11 @@ from random import randint
 logger = logging.getLogger(__name__)
 
 
-def page_not_found(request):
-    return render(request, 'vital/404.html')
+def handler404(request):
+    response = render_to_response('404.html', {},
+                                  context_instance=RequestContext(request))
+    response.status_code = 404
+    return response
 
 
 def register(request):

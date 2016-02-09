@@ -3,7 +3,6 @@ from django.conf.urls import url
 from . import views
 
 app_name = 'vital'
-handler404 = 'vital.views.page_not_found'
 urlpatterns = [
     url(r'^$', views.index, name='index'),
     url(r'^courses/register/$', views.register_for_course, name='course_register'),
