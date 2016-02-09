@@ -17,6 +17,10 @@ from random import randint
 logger = logging.getLogger(__name__)
 
 
+def page_not_found(request):
+    return render(request, 'vital/404.html')
+
+
 def register(request):
     logger.debug("in register")
     error_message = ''
