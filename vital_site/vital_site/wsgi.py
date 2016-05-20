@@ -11,9 +11,10 @@ import os
 
 from django.core.wsgi import get_wsgi_application
 
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "vital_site.settings")
+
 def application(environ, start_response):
     _application = get_wsgi_application()
-    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "vital_site.settings")
     os.environ.setdefault("VITAL_DB_NAME", environ['VITAL_DB_NAME'])
     os.environ.setdefault("VITAL_DB_HOST", environ['VITAL_DB_HOST'])
     os.environ.setdefault("VITAL_DB_PORT", environ['VITAL_DB_PORT'])
