@@ -91,11 +91,11 @@ print "<>", config.get("Database", "VITAL_DB_NAME"), "<>"
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': os.environ.get("VITAL_DB_NAME", ''),
-        'USER': os.environ.get("VITAL_DB_USER", ''),
-        'PASSWORD': os.environ.get("VITAL_DB_PWD", ''),
-        'HOST': os.environ.get("VITAL_DB_HOST", ''),
-        'PORT': os.environ.get("VITAL_DB_PORT", ''),
+        'NAME': config.get("Database", "VITAL_DB_NAME"),
+        'USER': config.get("Database", "VITAL_DB_USER"),
+        'PASSWORD': config.get("Database", "VITAL_DB_PWD"),
+        'HOST': config.get("Database", "VITAL_DB_HOST"),
+        'PORT': config.get("Database", "VITAL_DB_PORT"),
     }
 }
 
@@ -178,10 +178,10 @@ LOGGING = {
 }
 
 EMAIL_USE_TLS = True
-EMAIL_HOST = os.environ.get("VITAL_EMAIL_HOST", ''),
-EMAIL_HOST_USER = os.environ.get("VITAL_EMAIL_USER", ''),
-EMAIL_HOST_PASSWORD = os.environ.get("VITAL_EMAIL_PWD", ''),
-EMAIL_PORT =  os.environ.get("VITAL_EMAIL_PORT", ''),
+EMAIL_HOST = config.get("Email", "VITAL_EMAIL_HOST"),
+EMAIL_HOST_USER = config.get("Email", "VITAL_EMAIL_USER"),
+EMAIL_HOST_PASSWORD = config.get("Email", "VITAL_EMAIL_PWD"),
+EMAIL_PORT = config.get("Email", "VITAL_EMAIL_PORT"),
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
 PASSWORD_MIN_LENGTH = 8
