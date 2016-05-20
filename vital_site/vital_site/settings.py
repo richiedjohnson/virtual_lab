@@ -81,6 +81,8 @@ WSGI_APPLICATION = 'vital_site.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.9/ref/settings/#databases
 
+TEST = os.environ.get("VITAL_DB_NAME", '')
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
@@ -171,9 +173,9 @@ LOGGING = {
 }
 
 EMAIL_USE_TLS = True
-EMAIL_HOST =  os.environ.get("VITAL_EMAIL_HOST", ''),
-EMAIL_HOST_USER =  os.environ.get("VITAL_EMAIL_USER", ''),
-EMAIL_HOST_PASSWORD =  os.environ.get("VITAL_EMAIL_PWD", ''),
+EMAIL_HOST = os.environ.get("VITAL_EMAIL_HOST", ''),
+EMAIL_HOST_USER = os.environ.get("VITAL_EMAIL_USER", ''),
+EMAIL_HOST_PASSWORD = os.environ.get("VITAL_EMAIL_PWD", ''),
 EMAIL_PORT =  os.environ.get("VITAL_EMAIL_PORT", ''),
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
