@@ -176,10 +176,10 @@ LOGGING = {
 }
 
 EMAIL_USE_TLS = True
-EMAIL_HOST = config.get("Email", "VITAL_EMAIL_HOST"),
-EMAIL_HOST_USER = config.get("Email", "VITAL_EMAIL_USER"),
-EMAIL_HOST_PASSWORD = config.get("Email", "VITAL_EMAIL_PWD"),
-EMAIL_PORT = config.get("Email", "VITAL_EMAIL_PORT"),
+EMAIL_HOST = config.get("Email", "VITAL_EMAIL_HOST")
+EMAIL_HOST_USER = config.get("Email", "VITAL_EMAIL_USER")
+EMAIL_HOST_PASSWORD = config.get("Email", "VITAL_EMAIL_PWD")
+EMAIL_PORT = config.get("Email", "VITAL_EMAIL_PORT")
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
 PASSWORD_MIN_LENGTH = 8
