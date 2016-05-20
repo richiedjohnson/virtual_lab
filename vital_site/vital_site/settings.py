@@ -25,7 +25,7 @@ SECRET_KEY = '^x#@a8rzi(7e&wq_qflbkc8s$^&b=i0e6(z@4t8ol6dxt%71q='
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -84,11 +84,11 @@ WSGI_APPLICATION = 'vital_site.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'vital_db',
-        'USER': 'richie',
-        'PASSWORD': 'admin',
-        'HOST': '',
-        'PORT': '5432',
+        'NAME': os.environ.get("VITAL_DB_NAME", ''),
+        'USER': os.environ.get("VITAL_DB_USER", ''),
+        'PASSWORD': os.environ.get("VITAL_DB_PWD", ''),
+        'HOST': os.environ.get("VITAL_DB_HOST", ''),
+        'PORT': os.environ.get("VITAL_DB_PORT", ''),
     }
 }
 
@@ -150,7 +150,7 @@ LOGGING = {
         'file': {
             'level': 'DEBUG',
             'class': 'logging.FileHandler',
-            'filename': 'vital.log',
+            'filename': '/var/log/vital/vital.log',
             'formatter': 'verbose'
         },
         'console': {
@@ -171,10 +171,10 @@ LOGGING = {
 }
 
 EMAIL_USE_TLS = True
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = 'vital.nyu@gmail.com'
-EMAIL_HOST_PASSWORD = 'vital@nyupoly'
-EMAIL_PORT = 587
+EMAIL_HOST =  os.environ.get("VITAL_EMAIL_HOST", ''),
+EMAIL_HOST_USER =  os.environ.get("VITAL_EMAIL_USER", ''),
+EMAIL_HOST_PASSWORD =  os.environ.get("VITAL_EMAIL_PWD", ''),
+EMAIL_PORT =  os.environ.get("VITAL_EMAIL_PORT", ''),
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
 PASSWORD_MIN_LENGTH = 8
