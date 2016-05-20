@@ -127,7 +127,7 @@ def forgot_password(request):
                 user.save()
                 send_mail('Password reset mail', 'Hi '+user.first_name+',\r\n\n Please copy the following link to '
                                                                        'reset your password to your browser. '
-                                                                       'http://localhost:8000/'
+                                                                       'http://vital-dev2.poly.edu/'
                                                                        'vital/users/reset-password?user_email='
                           + user.email+'&activation_code='+str(activation_code)
                           + '.\r\n\nVital', 'no-reply-vital@nyu.edu',
