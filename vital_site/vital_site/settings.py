@@ -83,7 +83,7 @@ WSGI_APPLICATION = 'vital_site.wsgi.application'
 # https://docs.djangoproject.com/en/1.9/ref/settings/#databases
 
 config = ConfigParser.ConfigParser()
-config.read("config.ini")
+config.read("/home/rdj259/config.ini")
 
 
 DATABASES = {
