@@ -31,5 +31,6 @@ def application(environ, start_response):
     os.environ.setdefault("VITAL_EMAIL_PORT", environ['VITAL_EMAIL_PORT'])
     os.environ.setdefault("VITAL_EMAIL_USER", environ['VITAL_EMAIL_USER'])
     os.environ.setdefault("VITAL_EMAIL_PWD", environ['VITAL_EMAIL_PWD'])
+    print "<>", os.environ.get("VITAL_DB_NAME", ""), "<>"
     print ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>OUT APPLICATION>>>>>>>>>>>>>>>"
     return _application(environ, start_response)
