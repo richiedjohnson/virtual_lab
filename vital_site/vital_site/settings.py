@@ -81,8 +81,6 @@ WSGI_APPLICATION = 'vital_site.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.9/ref/settings/#databases
 
-TEST = os.environ.get("VITAL_DB_NAME", '')
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
