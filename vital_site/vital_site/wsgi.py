@@ -20,6 +20,8 @@ _application = get_wsgi_application()
 
 
 def application(environ, start_response):
+    print ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>IN APPLICATION>>>>>>>>>>>>>>>"
+    print "<>", environ['VITAL_DB_NAME'], "<>"
     os.environ.setdefault("VITAL_DB_NAME", environ['VITAL_DB_NAME'])
     os.environ.setdefault("VITAL_DB_HOST", environ['VITAL_DB_HOST'])
     os.environ.setdefault("VITAL_DB_PORT", environ['VITAL_DB_PORT'])
@@ -29,4 +31,5 @@ def application(environ, start_response):
     os.environ.setdefault("VITAL_EMAIL_PORT", environ['VITAL_EMAIL_PORT'])
     os.environ.setdefault("VITAL_EMAIL_USER", environ['VITAL_EMAIL_USER'])
     os.environ.setdefault("VITAL_EMAIL_PWD", environ['VITAL_EMAIL_PWD'])
+    print ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>OUT APPLICATION>>>>>>>>>>>>>>>"
     return _application(environ, start_response)
