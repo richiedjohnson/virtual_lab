@@ -81,7 +81,8 @@ WSGI_APPLICATION = 'vital_site.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.9/ref/settings/#databases
 
-
+print "??????????????????????????"
+print "<>", os.environ.get("VITAL_DB_NAME", ""), "<>"
 
 DATABASES = {
     'default': {
