@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/1.9/ref/settings/
 """
 
 import os
+import ConfigParser
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -81,8 +82,11 @@ WSGI_APPLICATION = 'vital_site.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.9/ref/settings/#databases
 
+config = ConfigParser.ConfigParser()
+config.read("/home/rdj259/config.ini")
+
 print "??????????????????????????"
-print "<>", os.environ.get('VITAL_DB_NAME', ""), "<>"
+print "<>", config.get("Database", "VITAL_DB_NAME"), "<>"
 
 DATABASES = {
     'default': {

@@ -17,20 +17,3 @@ os.environ.setdefault("DJANGO_SETTINGS_MODULE", "vital_site.settings")
 
 from django.core.wsgi import get_wsgi_application
 _application = get_wsgi_application()
-
-
-def application(environ, start_response):
-    print ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>IN APPLICATION>>>>>>>>>>>>>>>"
-    print "<>", environ['VITAL_DB_NAME'], "<>"
-    os.environ['VITAL_DB_NAME'] = environ['VITAL_DB_NAME']
-    os.environ['VITAL_DB_HOST'] = environ['VITAL_DB_HOST']
-    os.environ['VITAL_DB_PORT'] = environ['VITAL_DB_PORT']
-    os.environ['VITAL_DB_USER'] = environ['VITAL_DB_USER']
-    os.environ['VITAL_DB_PWD'] = environ['VITAL_DB_PWD']
-    os.environ['VITAL_EMAIL_HOST'] = environ['VITAL_EMAIL_HOST']
-    os.environ['VITAL_EMAIL_PORT'] = environ['VITAL_EMAIL_PORT']
-    os.environ['VITAL_EMAIL_USER'] = environ['VITAL_EMAIL_USER']
-    os.environ['VITAL_EMAIL_PWD'] = environ['VITAL_EMAIL_PWD']
-    print "<>", os.environ.get('VITAL_DB_NAME', ""), "<>"
-    print ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>OUT APPLICATION>>>>>>>>>>>>>>>"
-    return _application(environ, start_response)
