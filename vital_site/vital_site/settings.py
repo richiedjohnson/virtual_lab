@@ -16,12 +16,15 @@ import ConfigParser
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
+config = ConfigParser.ConfigParser()
+config.read("/home/rdj259/config.ini")
+
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.9/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '^x#@a8rzi(7e&wq_qflbkc8s$^&b=i0e6(z@4t8ol6dxt%71q='
+SECRET_KEY = config.get("Security", "SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -81,11 +84,6 @@ WSGI_APPLICATION = 'vital_site.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/1.9/ref/settings/#databases
-
-config = ConfigParser.ConfigParser()
-config.read("/home/rdj259/config.ini")
-
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
@@ -138,6 +136,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.9/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = '/home/rdj259/vital_static'
 
 LOGGING = {
     'version': 1,
