@@ -91,7 +91,7 @@ def reset_password(request):
         form = Reset_Password_Form(request.POST)
         if form.is_valid():
             logger.debug(">>>>>>>>>>>>>>>>>>"+str(request.user))
-            if request.user is not None and request.user.email is not None:
+            if not request.user.is_anonymous():
                 user = VLAB_User.objects.get(email=request.user.email)
                 user.set_password(form.cleaned_data['password'])
                 user.save()
